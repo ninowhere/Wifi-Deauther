@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ESP8266 - Início</title>
+    <link rel="icon" type="image/jpg" href="img/512img.png">
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .console-container {
+            background-color: #0d0d0d; border: 1px solid #333;
+            border-radius: 6px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            margin-top: 15px;
+        }
+        .console-header {
+            background-color: #24272c; padding: 8px 15px; display: flex;
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #333;
+        }
+        .console-title { font-size: 0.85em; color: #7CD650; font-weight: bold; }
+        .console-body {
+            height: 500px; padding: 12px; overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace; font-size: 0.85em;
+            line-height: 1.4; color: #7CD650;
+        }
+        .log-entry { margin-bottom: 4px; word-break: break-all; }
+        .log-time { color: #888; margin-right: 8px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #24272c; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #2e3238; color: #7CD650; }
+    </style>
+</head>
+
+<body>
+    <div class="header-container">
+        <h2>Dashboard ESP8266</h2>
+        <a href="howtoprotect.html" class="btn-defesa">
+            🛡️
+            <span class="tooltip-text">Como se proteger</span>
+        </a>
+    </div>
+    <div id="connection-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="status-text">ESP8266 Desconectado</span>
+    </div>
+
+    <div id="bw16-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="bw16-status-text">Aguardando BW16...</span>
+    </div>
+    <br>
+
+    <div class="tab-bar">
+        <a href="index.html" class="tab">Início</a>
+        <a href="attack.html" class="tab">Testando</a>
+        <a href="logs.html" class="tab active">Logs do Teste</a>
+        <a href="settings.html" class="tab" class="tab">Configurações</a>
+    </div>
+
+    <div class="console-header">
+        <span class="console-title">LOGS DO TESTE</span>
+        <div>
+            <button id="btn-baixar-log">Baixar</button>
+            <button id="btn-limpar-log" class="btn-resetar">Limpar</button>
+        </div>
+    </div>
+    <pre id="console-output"></pre>
+    <script type="module" src="js/logs.js"></script>
+</body>
+</html>

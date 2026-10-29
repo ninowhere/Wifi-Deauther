@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Defesa - Ataque Deauth</title>
+    <link rel="icon" type="image/png" href="img/512img.png">
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .container { max-width: 800px; margin: 20px auto; background-color: #24272c; padding: 30px; border-radius: 8px; border: 1px solid #333; }
+        h1 { color: #7CD650; margin-top: 0; font-size: 24px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        p { color: #ccc; font-size: 15px; }
+        
+        .card { background-color: #2e3238; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid #7CD650; }
+        .card h3 { margin-top: 0; color: #7CD650; font-size: 16px; display: flex; align-items: center; gap: 8px; }
+        
+        .highlight { background-color: rgba(124, 214, 80, 0.15); padding: 2px 6px; border-radius: 4px; color: #7CD650; font-weight: bold; }
+        .alerta-vermelho { background-color: rgba(222, 53, 69, 0.1); border-left: 4px solid #DE3545; padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+        .nota { background-color: rgba(244, 208, 63, 0.08); border-left: 4px solid #F4D03F; padding: 12px 15px; border-radius: 4px; margin-top: 10px; }
+        
+        .btn-voltar { display: inline-block; background-color: #7CD650; color: #111; padding: 12px 24px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-top: 20px; transition: background-color 0.2s; }
+        .btn-voltar:hover { background-color: #5BAA38; }
+        /* Container do rodapé para alinhar botão e imagem */
+        .footer-defesa {
+            justify-content: space-between; /* Botão na esquerda, imagem na direita */
+            align-items: flex-end;          /* Alinha os dois na base */
+            margin-top: 2px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        /* Estilo da imagem */
+        .img-mascote {
+            display: flex;
+            max-width: 240px; /* Ajuste o tamanho da imagem aqui */
+            height: auto;
+            margin-left: 70%;
+        }
+
+        /* Ajuste no botão voltar para ele não ficar colado na margem no celular */
+        .btn-voltar {
+            margin-top: 0; /* Remove a margem antiga, já que o rodapé tem margin-top */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🛡️ Como se Defender de Ataques Deauth e Medidas de Proteção</h1>
+        
+        <div class="alerta-vermelho">
+            <strong>Por que isso importa?</strong><br>
+            O ataque Deauth (desautenticação) envia pacotes falsificados que derrubam os dispositivos da rede Wi-Fi, e enquanto ele continua, eles não conseguem permanecer conectados. Atacantes usam isso para:
+            <ul>
+                <li>forçar a reconexão e <b>capturar o handshake</b> do WPA2, tentando descobrir a senha da rede offline;</li>
+                <li>empurrar o dispositivo para um <b>"Roteador Falso" (Evil Twin)</b>, onde podem tentar interceptar tráfego não criptografado ou enganar o usuário com páginas falsas que pedem a senha do Wi-Fi ou outros dados.</li>
+            </ul>
+        </div>
+
+        <p>O ataque é possível porque, no padrão Wi-Fi original (802.11), os pacotes de gerenciamento (como o de desautenticação) não eram autenticados, então qualquer pessoa ao alcance podia forjá-los. Esse problema foi corrigido pelo padrão <b>802.11w (PMF)</b>, mas a proteção só funciona quando está ativada no roteador e suportada pelos dispositivos.</p>
+
+        <div class="card">
+            <h3>1. Use WPA3 e/ou ative o PMF (802.11w) como "Obrigatório"</h3>
+            <p>Esta é a medida mais eficaz. O <span class="highlight">PMF (Protected Management Frames)</span> autentica e protege os pacotes de gerenciamento, e com isso tanto o roteador quanto o dispositivo <b>ignoram</b> pacotes de Deauth forjados.</p>
+            <ul>
+                <li>O <span class="highlight">WPA3</span> exige PMF, então já vem com essa proteção.</li>
+                <li>Em redes <b>WPA2</b>, procure a opção PMF / 802.11w / "Quadros de gerenciamento protegidos" e deixe como <b>Obrigatório</b> (<i>Required</i>). No modo "Opcional" ou no modo misto WPA2/WPA3, dispositivos sem PMF continuam vulneráveis.</li>
+                <li>Dispositivos muito antigos podem não conseguir se conectar com o PMF obrigatório.</li>
+            </ul>
+            <p>Pesquise como ativar essas opções no modelo específico do seu roteador, pois o endereço de acesso e o nome das opções variam de fabricante para fabricante.</p>
+            <div class="nota">
+                <p><b>Limitação:</b> o PMF não protege contra <i>jamming</i> (interferência de rádio proposital) nem contra pacotes trocados antes da associação.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>2. Em empresas: WPA2/WPA3-Enterprise, com PMF e validação de certificado</h3>
+            <p>No modo Enterprise (autenticação por usuário e senha, via 802.1X), cada usuário tem suas próprias chaves, então não existe uma senha compartilhada da rede para ser descoberta. Porém, isso <b>não impede o Deauth por si só</b>: sem PMF obrigatório, os dispositivos ainda podem ser desconectados.</p>
+            <p>Configure também os dispositivos para <b>validar o certificado do servidor</b> de autenticação. Sem isso, um Evil Twin pode capturar as credenciais dos usuários.</p>
+        </div>
+
+        <div class="card">
+            <h3>3. Fique atento a quedas repentinas e a redes suspeitas</h3>
+            <p>Quedas repetidas e sem motivo podem indicar um ataque, mas também podem ser apenas interferência ou sinal fraco.</p>
+            <p><b>Atenção:</b> o nome da rede (SSID) sozinho <b>não prova</b> que a rede é legítima, pois o atacante pode copiar exatamente o mesmo nome. Desconfie se:</p>
+            <ul>
+                <li>uma rede que sempre pediu senha aparecer <b>aberta</b>, sem senha;</li>
+                <li>uma página pedir a <b>senha do Wi-Fi</b>, login, dados de cartão ou "atualização" para liberar a internet;</li>
+                <li>o navegador exibir <b>avisos de certificado inválido</b> (nunca prossiga nesses casos).</li>
+            </ul>
+            <p>Na dúvida, desconecte e use os <b>dados móveis</b> até resolver. Evite ativar a conexão automática em redes abertas ou públicas.</p>
+        </div>
+
+        <div class="card">
+            <h3>4. Utilize uma VPN e navegue com HTTPS</h3>
+            <p>Mesmo que você caia em um roteador falso, uma <b>VPN (Rede Privada Virtual)</b> de provedor confiável criptografa o seu tráfego, e o atacante verá apenas dados embaralhados. O HTTPS (cadeado no navegador) também protege o conteúdo da maioria dos sites. Ative o recurso de bloqueio automático (<i>kill switch</i>) se a VPN oferecer.</p>
+            <p>Lembre-se: a VPN protege os seus dados, mas <b>não impede a desconexão</b> causada pelo Deauth.</p>
+        </div>
+
+        <div class="card">
+            <h3>5. Mantenha o Roteador Atualizado</h3>
+            <p>Atualizações de firmware corrigem outras falhas de segurança e, em muitos roteadores, é com elas que o suporte a <b>WPA3 e PMF</b> passa a existir. Note que o Deauth em si não é "corrigido" por atualização: quem resolve é o PMF ativado.</p>
+        </div>
+
+        <div class="card">
+            <h3>6. Medidas complementares</h3>
+            <ul>
+                <li>Use <b>cabo de rede (Ethernet)</b> em dispositivos críticos, como câmeras, alarmes e servidores.</li>
+                <li>Se ainda usa WPA2-Personal, defina uma <b>senha longa e forte</b>, para que um handshake capturado não possa ser quebrado.</li>
+                <li>Em ambientes maiores, use APs com <b>WIPS/WIDS</b>, que detectam picos de pacotes de Deauth. Em redes menores, ferramentas como Kismet e Wireshark (filtro <span class="highlight">wlan.fc.type_subtype == 0x0c</span>) ajudam a monitorar.</li>
+                <li>Desative o <b>WPS</b> do roteador, que é outro ponto fraco comum.</li>
+            </ul>
+        </div>
+        <div class="footer-defesa">
+            <a href="attack.html" class="btn-voltar">Voltar</a>        
+            <img src="img/yotsuba-protect.png" alt="Mascote" class="img-mascote">
+        </div>
+    </div>
+</body>
+</html>

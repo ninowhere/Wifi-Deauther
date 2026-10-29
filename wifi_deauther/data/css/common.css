@@ -1,0 +1,155 @@
+
+body { 
+    font-family: sans-serif; 
+    background: #1a1c1e; 
+    color: #f0f0f0; 
+    padding: 10px; 
+    margin: 0; 
+    line-height: 1.6;
+}
+
+h2 { color: #7CD650; margin-top: 0; }
+
+/* --- BARRA DE ABAS --- */
+.tab-bar {
+    display: flex;
+    align-items: flex-end;
+    background-color: #1a1c1e;
+    padding: 6px 8px 0 8px;
+    gap: 4px;
+    user-select: none;
+    border-bottom: 2px solid #2d2d2d;
+    margin-bottom: 15px;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 34px;
+    min-width: 120px;
+    max-width: 200px;
+    padding: 0 10px 0 14px;
+    background-color: transparent;
+    color: #999;
+    font-size: 13px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    text-decoration: none;
+}
+
+.tab:hover:not(.active) { background-color: #2a2a2a; color: #ccc; }
+.tab.active { background-color: #24272c; color: #7CD650; font-weight: bold; }
+.tab a, .tab a:visited { text-decoration: none; color: inherit; }
+
+/* --- STATUS INDICATORS --- */
+.status-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    padding: 6px 12px;
+    background-color: #24272c;
+    border-radius: 20px;
+    border: 1px solid #333;
+}
+
+.status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.status-online .status-dot { background-color: #7CD650; box-shadow: 0 0 8px rgba(124, 214, 80, 0.6); }
+.status-online #status-text, .status-online #bw16-status-text { color: #7CD650; }
+
+.status-offline .status-dot { background-color: #DE3545; box-shadow: 0 0 8px rgba(222, 53, 69, 0.4); }
+.status-offline #status-text, .status-offline #bw16-status-text { color: #DE3545; }
+
+.status-loading .status-dot { background-color: #F4D03F; box-shadow: 0 0 8px rgba(244, 208, 63, 0.5); }
+.status-loading #status-text { color: #F4D03F; }
+
+/* --- BOTÕES GERAIS --- */
+
+/* BOTÃO DE DEFESA (TOOLTIP) */
+.header-container { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.header-container h2 { margin: 0; }
+.btn-defesa {
+    position: relative; display: flex; justify-content: center; align-items: center;
+    width: 42px; height: 42px; background-color: #7CD650; color: #111;
+    text-decoration: none; border-radius: 50%; font-size: 22px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-defesa:hover { background-color: #5BAA38; transform: scale(1.1); }
+
+.btn-defesa .tooltip-text {
+    visibility: hidden; width: 140px; background-color: #24272c; color: #fff;
+    text-align: center; border-radius: 6px; padding: 8px; position: absolute;
+    z-index: 10; top: 120%; right: 0; font-size: 13px; font-weight: 500;
+    opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateY(-10px);
+    border: 1px solid #7CD650; pointer-events: none;
+}
+
+.btn-defesa .tooltip-text::after {
+    content: ""; position: absolute; bottom: 100%; right: 15px;
+    border-width: 6px; border-style: solid; border-color: transparent transparent #7CD650 transparent;
+    }
+
+.btn-defesa:hover .tooltip-text { visibility: visible; opacity: 1; transform: translateY(0); }
+
+button, .btn {
+    padding: 10px 20px; 
+    background-color: #7CD650; 
+    color: #111; 
+    border: none; 
+    cursor: pointer; 
+    font-weight: bold; 
+    border-radius: 6px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:hover, .btn:hover {
+    background-color: #5BAA38;
+    transform: scale(1.05);
+}
+
+/* Botões específicos de perigo/reset */
+.btn-perigo { background-color: #DE3545; color: #fff; }
+.btn-perigo:hover { background-color: #b52735; }
+.btn-resetar { background-color: #C28B60; color: #fff; }
+.btn-resetar:hover { background-color: #9e6a44; }
+
+/* --- TOASTS --- */
+#toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.toast {
+    background-color: #24272c;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 6px;
+    border-left: 4px solid #7CD650;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    font-weight: 500;
+    min-width: 250px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { border-left-color: #DE3545; }

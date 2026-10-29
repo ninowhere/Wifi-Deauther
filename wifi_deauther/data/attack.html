@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ESP8266 - Testando</title>
+    <link rel="icon" type="image/jpg" href="img/512img.png">
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .dashboard-container { display: flex; gap: 20px; align-items: flex-start; margin-top: 15px; }
+        
+        table { flex: 1; border-collapse: collapse; background: #24272c; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #444; }
+        th { background-color: #2e3238; color: #7CD650; }
+        tr:hover { background-color: #2e3238; }
+
+        .row-testing { background-color: #3a2e21 !important; font-weight: bold; }
+
+        .console-container {
+            flex: 1; background-color: #0d0d0d; border: 1px solid #333;
+            border-radius: 6px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .console-header {
+            background-color: #24272c; padding: 8px 15px; display: flex;
+            justify-content: space-between; align-items: center; border-bottom: 1px solid #333;
+        }
+        .console-title { font-size: 0.85em; color: #7CD650; font-weight: bold; }
+        .console-btn { background-color: #444; color: #eee; border: none; padding: 4px 10px; font-size: 0.8em; border-radius: 4px; cursor: pointer; }
+        .console-btn:hover { background-color: #555; }
+        
+        .console-body {
+            height: 300px; padding: 12px; overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace; font-size: 0.85em;
+            line-height: 1.4; color: #7CD650;
+        }
+        .log-entry { margin-bottom: 4px; word-break: break-all; }
+        .log-time { color: #888; margin-right: 8px; }
+
+        #btn-parar { float: right; margin-left: auto; display: flex; }
+
+        @media (max-width: 768px) {
+            .dashboard-container { flex-direction: column; }
+            table, .console-container { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h2>Dashboard ESP8266</h2>
+        <a href="howtoprotect.html" class="btn-defesa">
+            🛡️
+            <span class="tooltip-text">Como se proteger</span>
+        </a>
+    </div>
+
+    <div id="connection-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="status-text">ESP8266 Desconectado</span>
+    </div>
+
+    <div id="bw16-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="bw16-status-text">BW16 Desconectado</span>
+    </div>
+    <br>
+
+    <div class="tab-bar">
+        <a href="index.html" class="tab">Início</a>
+        <a href="attack.html" class="tab active">Testando</a>
+        <a href="logs.html" class="tab">Logs do Teste</a>
+        <a href="settings.html" class="tab" class="tab">Configurações</a>
+        <button id="btn-parar">Parar</button>
+    </div>
+
+
+    <!-- CONTAINER QUE MANTEEM AMBOS LADO A LADO -->
+    <div class="dashboard-container">
+        
+        <!-- LADO ESQUERDO: TABELA -->
+        <table id="device-table">
+            <thead>
+                <tr>
+                    <th>BSSID</th>
+                    <th>SSID</th>
+                    <th>Canal</th>
+                    <th>Vunerável?</th>               
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+
+        <!-- LADO DIREITO: CONSOLE -->
+        <div class="console-container">
+            <div class="console-header">
+                <span class="console-title">MONITOR SERIAL / LOGS</span>
+                <!--<button class="console-btn" onclick="limparConsole()">Limpar</button> -->
+            </div>
+            <div class="console-body" id="console-output">
+                <div class="log-entry"><span class="log-time">[00:00:00]</span> Console aguardando dados...</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module" src="js/attack.js"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ESP8266 - Configurações</title>
+    <link rel="icon" type="image/jpg" href="img/512img.png">
+    <link rel="stylesheet" href="css/common.css">
+    <style>
+        .config-container {
+            background-color: #24272c; padding: 24px;
+            border-radius: 0 0 8px 8px; max-width: 800px; margin: 0 auto;
+        }
+        .config-container h3 { color: #7CD650; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 8px; }
+        
+        .config-card { background-color: #2e3238; padding: 18px 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #333; }
+        .config-card h4 { margin-top: 0; margin-bottom: 16px; color: #7CD650; font-size: 15px; }
+
+        .input-group { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+        .input-group:last-child { margin-bottom: 0; }
+        .input-group label { font-size: 14px; color: #ccc; }
+        .hint { font-size: 12px; color: #888; margin-top: 4px; }
+
+        .input-wrapper {
+            display: flex; align-items: center; background-color: #1a1c1e;
+            border: 1px solid #444; border-radius: 6px; padding: 0 10px;
+        }
+        .input-wrapper:focus-within { border-color: #7CD650; }
+        
+        .input-wrapper input {
+            background: transparent; border: none; color: #fff; padding: 8px 0;
+            font-size: 15px; outline: none;
+        }
+        .input-wrapper input[type="number"] { width: 60px; text-align: right; }
+        .input-wrapper input[type="text"], .input-wrapper input[type="password"] { flex: 1; text-align: left; }
+        .input-wrapper .unit { color: #888; margin-left: 6px; font-size: 13px; }
+
+        .action-bar-settings { display: flex; justify-content: flex-end; gap: 12px; max-width: 800px; margin: 16px auto 0 auto; }
+    </style>
+</head>
+
+<body>
+    <div class="header-container">
+        <h2>Dashboard ESP8266</h2>
+        <a href="howtoprotect.html" class="btn-defesa">
+            🛡️
+            <span class="tooltip-text">Como se proteger</span>
+        </a>
+    </div>
+    <div id="connection-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="status-text">ESP8266 Desconectado</span>
+    </div>
+
+    <div id="bw16-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="bw16-status-text">Aguardando BW16...</span>
+    </div>
+    <br>
+
+    <div class="tab-bar">
+        <a href="index.html" class="tab">Início</a>
+        <a href="attack.html" class="tab">Testando</a>
+        <a href="logs.html" class="tab">Logs do Teste</a>
+        <a href="settings.html" class="tab active">Configurações</a>
+    </div>
+   <div class="config-container">
+    <h3>Configurações</h3>
+    
+    <form id="settings-form">
+        <!-- Card: Configurações de Tempos -->
+        <div class="config-card">
+            <h4>Tempos de Duração</h4>
+            
+        <!-- Opção 1 -->
+        <div class="input-group">
+            <div class="label-group">
+                <label for="tempo-inicial">Tempo de sniffing inicial (antes do ataque)</label>
+                <div class="hint">Em segundos (recomendado: 5–10)</div>
+            </div>
+            <div class="input-wrapper">
+                <input type="number" id="tempo-inicial" name="tempoInicial" min="1" max="60" value="12" required>
+                <span class="unit">s</span>
+            </div>
+        </div>
+
+        <!-- Opção 2 -->
+        <div class="input-group">
+            <div class="label-group">
+                <label for="tempo-ataque">Intervalo de ataque (entre os sniffings)</label>
+                <div class="hint">Tempo que o ataque ficará ativo antes do segundo sniffing (segundos)</div>
+            </div>
+            <div class="input-wrapper">
+                <input type="number" id="tempo-ataque" name="tempoAtaque" min="1" max="300" value="10" required>
+                <span class="unit">s</span>
+            </div>
+        </div>
+
+        <!-- Opção 3 -->
+        <div class="input-group">
+            <div class="label-group">
+                <label for="tempo-durante">Tempo de sniffing durante o ataque</label>
+                <div class="hint">Em segundos (recomendado: 5)</div>
+            </div>
+            <div class="input-wrapper">
+                <input type="number" id="tempo-durante" name="tempoDurante" min="5" max="600" value="6" required>
+                <span class="unit">s</span>
+            </div>
+        </div>
+        </div>
+
+        <!-- Card: Opções Gerais -->
+        <div class="config-card">
+            <h4>WiFi</h4>
+            
+            <div class="input-group">
+                <div class="label-group">
+                    <label for="ssid">Nome da Rede (SSID)</label>
+                        <div class="hint">Nome da rede WiFi que deseja conectar</div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="text" id="ssid" name="nomeRede">
+                </div>
+          </div>
+
+          <div class="input-group">
+                <div class="label-group">
+                    <label for="senha">Senha</label>
+                        <div class="hint">Senha da rede WiFi que deseja conectar</div>
+                </div>
+                <div class="input-wrapper">
+                    <input type="password" id="senha" name="senhaRede">
+                </div>
+          </div>
+        </div>
+    </form>
+</div>
+
+<!-- Botões de Ação na parte inferior -->
+<div class="action-bar-settings">                    
+    <button class="btn btn-resetar" id="btn-resetar" type="button">Restaurar Padrões</button>
+    <button class="btn btn-salvar" id="btn-salvar" type="button">Salvar Configurações</button>
+</div>
+
+    <script type="module" src="js/settings.js"></script>
+</body>
+</html>

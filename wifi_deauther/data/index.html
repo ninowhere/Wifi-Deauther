@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard ESP8266 - Início</title>
+    <link rel="icon" type="image/jpg" href="img/512img.png">
+    <link rel="stylesheet" href="css/common.css"> 
+    <style>
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #24272c; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #2e3238; color: #7CD650; }
+        tr:hover { background-color: #2e3238; }
+
+        input[type="checkbox"] { cursor: pointer; width: 16px; height: 16px; accent-color: #7CD650; }
+        th:first-child { text-align: center; padding-left: 0; padding-right: 0; }
+        .box { text-align: center; width: 36px; height: 16px; }
+
+        .action-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            background-color: #24272c; padding: 8px 16px; margin-top: 10px;
+            border-radius: 6px 6px 0 0; border-bottom: 1px solid #333;
+        }
+
+        .switch-container { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
+        .switch-label { font-size: 18px; font-weight: 500; color: #ccc; transition: color 0.2s ease; }
+        .switch-container:hover .switch-label { color: #7CD650; }
+        
+        .switch { position: relative; display: inline-block; width: 42px; height: 22px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #444; transition: .3s; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .3s; }
+        input:checked + .slider { background-color: #7CD650; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .slider.round { border-radius: 20px; }
+        .slider.round:before { border-radius: 50%; }
+
+        #botoes-teste { float: right; display: flex; gap: 10px; }
+        #btn-todas { float: left; }
+
+    </style>
+</head>
+
+<body>
+    <div class="header-container">
+        <h2>Dashboard ESP8266</h2>
+        <a href="howtoprotect.html" class="btn-defesa">
+            🛡️
+            <span class="tooltip-text">Como se proteger</span>
+        </a>
+    </div>
+    <div id="connection-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="status-text">ESP8266 Desconectado</span>
+    </div>
+
+    <div id="bw16-status" class="status-container status-offline">
+        <span class="status-dot"></span>
+        <span id="bw16-status-text">Aguardando BW16...</span>
+    </div>
+    <br>
+
+    <div class="tab-bar">
+        <a href="index.html" class="tab active">Início</a>
+        <a href="attack.html" class="tab">Testando</a>
+        <a href="logs.html" class="tab">Logs do Teste</a>
+        <a href="settings.html" class="tab" class="tab">Configurações</a>
+    </div>
+
+    <div class="action-bar">
+        <label class="switch-container">
+            <span class="switch-label">Selecionar todas</span>
+            <div class="switch">     
+                <input type="checkbox" id="select-all-switch">
+                <span class="slider round"></span>
+            </div>
+        </label>
+
+        <div id="botoes-teste">           
+            <button id="btn-enviar">Testar</button>
+            <button id="btn-sniff">Sniff</button>
+        </div>
+    </div>
+
+    <!-- Tabela de Redes -->
+    <table id="device-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>BSSID</th>
+                <th>SSID</th>
+                <th>Canal</th>
+                <th id="sinal" style="cursor: pointer;">
+                    Sinal
+                    <span id="seta-sinal"></span>  
+                </th>
+                <th>Proteção</th>               
+            </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+    </table>
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>
